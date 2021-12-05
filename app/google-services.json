@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1038513746561",
+    "project_id": "nari-safety",
+    "storage_bucket": "nari-safety.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038513746561:android:46dc6663a02104a580d380",
+        "android_client_info": {
+          "package_name": "com.gtech.narisafety"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038513746561-oc0ugsq629g3tirlvfo4m9jngj9mktv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw8Wjo6_UtG6rHZkzoeOTji-QdBu997Ik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038513746561-oc0ugsq629g3tirlvfo4m9jngj9mktv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

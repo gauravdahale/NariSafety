@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/grey_10"
+    android:clipChildren="false"
+    tools:context=".auth.LoginFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/topcard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="-13dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/loginvector"
+            android:cropToPadding="true"
+            android:paddingTop="13dp" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/textview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cabin_medium"
+        android:text="Register"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/logincard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@id/topcard" />
+
+    <club.cred.synth.views.ElevatedView
+        android:id="@+id/logincardelevatedview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:minHeight="200dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="@id/logincard"
+        app:layout_constraintEnd_toEndOf="@id/logincard"
+        app:layout_constraintStart_toStartOf="@id/logincard"
+        app:layout_constraintTop_toTopOf="@id/logincard"
+        app:neuPlatformAppearance="@style/elevated_appearance"
+        app:neuPlatformColor="@android:color/white" />
+
+    <FrameLayout
+        android:id="@+id/logincard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_30sdp"
+        android:clipChildren="false"
+        android:minHeight="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topcard">
+
+        <LinearLayout
+            android:id="@+id/step1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="@dimen/_20sdp"
+            android:clipChildren="false"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/cabin_medium"
+                android:text="Register"
+                android:textColor="@color/grey_60"
+                android:textSize="@dimen/_20sdp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:autofillHints="name"
+                android:background="@null"
+                android:drawableStart="@drawable/ic_baseline_person_outline_24"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:id="@+id/auth_name"
+                android:fontFamily="@font/cabin_medium"
+                android:hint="Enter Name"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:textAlignment="viewStart"
+                android:textColor="@color/design_default_color_primary"
+                android:textColorHint="@color/design_default_color_primary"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/auth_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:autofillHints="phone"
+                android:background="@null"
+                android:drawableStart="@drawable/ic_baseline_smartphone_24"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:maxLength="10"
+                android:fontFamily="@font/cabin_medium"
+                android:hint="Enter Mobile Number"
+                android:inputType="number"
+                android:padding="10dp"
+                android:textAlignment="viewStart"
+                android:textColor="@color/design_default_color_primary"
+                android:textColorHint="@color/design_default_color_primary"
+                android:textSize="20sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submit_step1"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="8dp"
+                android:text="Submit"
+                android:textColor="@color/design_default_color_primary"
+                app:cornerRadius="10dp"
+                app:strokeColor="@color/design_default_color_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/step2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:visibility="invisible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="Please enter the code sent on your mobile number"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/code"
+                android:minWidth="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/cabin_medium"
+                android:paddingHorizontal="20dp"
+                android:textSize="24sp"
+                tools:text="654573" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submit_step2"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="8dp"
+                android:text="Verify"
+                android:textColor="@color/design_default_color_primary"
+                app:cornerRadius="10dp"
+                app:strokeColor="@color/design_default_color_primary" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
