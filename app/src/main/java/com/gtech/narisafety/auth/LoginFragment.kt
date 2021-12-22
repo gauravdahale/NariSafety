@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -28,6 +29,7 @@ import com.google.firebase.auth.PhoneAuthProvider.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ServerValue
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
+import com.gtech.narisafety.MainActivity
 import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
 

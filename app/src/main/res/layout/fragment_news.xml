@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_50"
+    android:clipChildren="false"
+    tools:context=".news.NewsFragment">
+
+    <TextView
+        android:id="@+id/journey"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Journey"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/news"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/news"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="News"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/journey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/journey" />
+
+    <View
+        android:id="@+id/journeybar"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="3dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/design_default_color_primary"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@id/journey"
+        app:layout_constraintStart_toStartOf="@id/journey"
+        app:layout_constraintTop_toBottomOf="@id/journey" />
+
+    <View
+        android:id="@+id/newsbar"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="3dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/design_default_color_primary"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/news"
+        app:layout_constraintStart_toStartOf="@id/news"
+        app:layout_constraintTop_toBottomOf="@id/news" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/grey_50"
+        android:clipChildren="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/journeybar">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Adding 15 rows of placeholders -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_news_shimmer" />
+
+                <include layout="@layout/item_news_shimmer" />
+
+                <include layout="@layout/item_news_shimmer" />
+
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/news_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:layout_marginStart="8dp"
+
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:clipChildren="false"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_news" />
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

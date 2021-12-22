@@ -23,7 +23,20 @@
             app:popUpToInclusive="true"
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addLocationDialogFragment"
+            app:destination="@id/addLocationDialogFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.gtech.narisafety.news.NewsFragment"
+        android:label="fragment_news"
+        tools:layout="@layout/fragment_news" />
+    <dialog
+        android:id="@+id/addLocationDialogFragment"
+        android:name="com.gtech.narisafety.home.AddLocationDialogFragment"
+        android:label="fragment_add_location_dialog_list_dialog"
+        tools:layout="@layout/fragment_add_location_dialog_list_dialog" />
 
 
 </navigation>

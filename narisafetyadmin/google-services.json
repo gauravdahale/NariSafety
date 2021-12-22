@@ -1,0 +1,101 @@
+{
+  "project_info": {
+    "project_number": "1038513746561",
+    "firebase_url": "https://nari-safety-default-rtdb.firebaseio.com",
+    "project_id": "nari-safety",
+    "storage_bucket": "nari-safety.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038513746561:android:46dc6663a02104a580d380",
+        "android_client_info": {
+          "package_name": "com.gtech.narisafety"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038513746561-ditqvcdnkruilbv5ios2htnpfnsj3hl1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gtech.narisafety",
+            "certificate_hash": "bc10022a023b184d3f49497196377150ea5a6a31"
+          }
+        },
+        {
+          "client_id": "1038513746561-p0gd62vn5s59e1n90mq5o58e4bph7v0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gtech.narisafety",
+            "certificate_hash": "763986efac718c8ff631c5e985c5a50f1bcc87e0"
+          }
+        },
+        {
+          "client_id": "1038513746561-oc0ugsq629g3tirlvfo4m9jngj9mktv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw8Wjo6_UtG6rHZkzoeOTji-QdBu997Ik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038513746561-oc0ugsq629g3tirlvfo4m9jngj9mktv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038513746561:android:265e8d2c0c682f4c80d380",
+        "android_client_info": {
+          "package_name": "com.gtech.narisafetyadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038513746561-cv3mnf3tnajjm0jf5p7am8ij5alld3df.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gtech.narisafetyadmin",
+            "certificate_hash": "763986efac718c8ff631c5e985c5a50f1bcc87e0"
+          }
+        },
+        {
+          "client_id": "1038513746561-sv4h4v4kuefuee9me444m8g81f6ndsdg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gtech.narisafetyadmin",
+            "certificate_hash": "bc10022a023b184d3f49497196377150ea5a6a31"
+          }
+        },
+        {
+          "client_id": "1038513746561-oc0ugsq629g3tirlvfo4m9jngj9mktv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw8Wjo6_UtG6rHZkzoeOTji-QdBu997Ik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038513746561-oc0ugsq629g3tirlvfo4m9jngj9mktv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
