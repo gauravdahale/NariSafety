@@ -65,8 +65,9 @@ binding.addNews.setOnClickListener {
                 ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     mList.clear()
-                    for (child in snapshot.children) {
+                    snapshot.children.forEach { child ->
                         val model = child.getValue(NewsModel::class.java)
+                        model?.key = child.key
                         mList.add(model!!)
                         Log.d("HomeFragment", "onDataChange: model ${model.heading}")
                     }

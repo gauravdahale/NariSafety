@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/journey"
             android:layout_width="wrap_content"
-
+android:textStyle="bol"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="Journey"

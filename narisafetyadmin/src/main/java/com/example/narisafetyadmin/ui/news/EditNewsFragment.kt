@@ -14,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.narisafetyadmin.R
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -31,6 +33,7 @@ private const val ARG_PARAM2 = "param2"
 
 
 class EditNewsFragment : Fragment() {
+    private lateinit var mNavController: NavController
     private var param1: String? = null
     private var param2: String? = null
     val SELECT_PICTURES: Int = 101
@@ -45,6 +48,7 @@ class EditNewsFragment : Fragment() {
     lateinit var mHeading: TextInputEditText
     lateinit var mDescription: TextInputEditText
     lateinit var mSubmit: MaterialButton
+    lateinit var mDelete: MaterialButton
     lateinit var model :NewsModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,11 +68,13 @@ class EditNewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mNavController =Navigation.findNavController(view)
         mStorageRef = FirebaseStorage.getInstance().reference.child("news")
         mImageview =view.findViewById(R.id.image)
         mDescription =view.findViewById(R.id.description)
         mHeading =view.findViewById(R.id.heading)
         mSubmit = view.findViewById(R.id.submit)
+        mDelete = view.findViewById(R.id.delete)
         model = arguments?.getSerializable("parcel") as NewsModel
         mHeading.setText(model.heading)
         mDescription.setText(model.description)
@@ -86,6 +92,12 @@ class EditNewsFragment : Fragment() {
                 pd.show()
                 if (dhavalimages.size != 0) logComplaintWithImage(model, pd)
                 else logComplaint(pd,model)
+            }
+        }
+        mDelete.setOnClickListener {
+            FirebaseDatabase.getInstance().reference.child("news").child(model.key!!).removeValue().addOnSuccessListener {
+                Toast.makeText(context, "News Deleted", Toast.LENGTH_SHORT).show()
+                mNavController.popBackStack()
             }
         }
     }
@@ -141,7 +153,7 @@ class EditNewsFragment : Fragment() {
                 dhavalimages.clear()
                 val fileUri = result?.data
                 dhavalimages.add(fileUri!!)
-                imagemap["0"] = fileUri!!
+                imagemap["0"] = fileUri
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     imagepicked = true
                     Glide.with(this)

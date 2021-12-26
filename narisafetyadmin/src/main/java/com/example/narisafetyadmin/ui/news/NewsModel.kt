@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class NewsModel:Serializable {
+    var key: String? = null
     var heading: String? = null
     var image: String? = null
     var description: String? = null
