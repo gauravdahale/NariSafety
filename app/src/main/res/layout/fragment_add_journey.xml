@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipChildren="false"
+    android:fillViewport="false"
+    tools:context=".AddJourneyFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+>
+
+    <TextView
+        android:id="@+id/journey"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Journey"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/news"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/news"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="News"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/journey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/journey" />
+
+    <View
+        android:id="@+id/journeybar"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="3dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/design_default_color_primary"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@id/journey"
+        app:layout_constraintStart_toStartOf="@id/journey"
+        app:layout_constraintTop_toBottomOf="@id/journey" />
+
+    <View
+        android:id="@+id/newsbar"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="3dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/design_default_color_primary"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/news"
+        app:layout_constraintStart_toStartOf="@id/news"
+        app:layout_constraintTop_toBottomOf="@id/news" />
+
+
+    <!--Location Layout-->
+    <club.cred.synth.views.ElevatedView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/locationlayout"
+        app:layout_constraintEnd_toEndOf="@id/locationlayout"
+        app:layout_constraintStart_toStartOf="@id/locationlayout"
+        app:layout_constraintTop_toTopOf="@id/locationlayout"
+        app:neuCornerRadius="10dp"
+
+        app:neuPlatformColor="@color/color_white" />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_60sdp"
+        android:id="@+id/locationlayout"
+        android:layout_marginBottom="@dimen/_60sdp"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_30sdp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/cancel_journey"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_journey"
+        tools:layout_editor_absoluteX="39dp">
+
+        <TextView
+            android:id="@+id/startlocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cabin_medium"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/color_black"
+            android:textSize="18sp"
+            tools:text="Start Location Here" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/localtion_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/endlocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cabin_medium"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/color_black"
+            android:textSize="18sp"
+            tools:text="End Location Here" />
+    </LinearLayout>
+
+    <club.cred.synth.views.SynthButton
+        android:id="@+id/go_to_journey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_28sdp"
+        android:layout_marginBottom="30dp"
+        android:padding="10dp"
+        android:text="Add Journey"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/journeybar"
+        app:layout_constraintVertical_bias="0.129"
+        app:neuButtonType="elevated_soft"
+        app:neuPlatformColor="@color/color_white" />
+
+    <club.cred.synth.views.SynthButton
+        android:id="@+id/cancel_journey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_28sdp"
+        android:layout_marginBottom="30dp"
+        android:padding="10dp"
+        android:text="Reset Journey"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintStart_toStartOf="parent"
+        app:neuButtonType="elevated_soft"
+        app:neuPlatformColor="@color/color_white" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

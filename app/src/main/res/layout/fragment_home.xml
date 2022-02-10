@@ -18,7 +18,8 @@
         <TextView
             android:id="@+id/journey"
             android:layout_width="wrap_content"
-android:textStyle="bol"
+android:textStyle="bold"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="Journey"
@@ -63,7 +64,7 @@ android:textStyle="bol"
             app:layout_constraintStart_toStartOf="@id/news"
             app:layout_constraintTop_toBottomOf="@id/news" />
 
-
+<!--ADD ROUTE-->
     <Button
         android:id="@+id/addlocation"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -76,6 +77,7 @@ android:textStyle="bol"
         app:layout_constraintEnd_toEndOf="parent"
 
        app:layout_constraintTop_toBottomOf="@id/journeybar" />
+<!--    USERNAME-->
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
@@ -114,7 +116,7 @@ android:textStyle="bol"
         app:neuCornerRadius="10dp"
 
         app:neuPlatformColor="@color/color_white" />
-
+<!--Location Layout-->
     <club.cred.synth.views.ElevatedView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -166,6 +168,7 @@ android:textStyle="bol"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Start Location"
+            android:textStyle="bold"
             android:textColor="@color/design_default_color_primary"
             android:textSize="16sp" />
 
@@ -196,6 +199,7 @@ android:textStyle="bol"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="End Location"
+            android:textStyle="bold"
             android:textColor="@color/design_default_color_primary"
             android:textSize="16sp" />
 
@@ -254,6 +258,7 @@ android:textStyle="bol"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="SOS Number"
+            android:textStyle="bold"
             android:textColor="@color/design_default_color_primary"
             android:textSize="16sp" />
 
@@ -279,6 +284,7 @@ android:textStyle="bol"
         android:layout_marginTop="@dimen/_20sdp"
         android:padding="10dp"
         android:text="Set Journey"
+        android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_primary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -293,6 +299,7 @@ android:textStyle="bol"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_14sdp"
         android:layout_marginTop="@dimen/_14sdp"
+        android:textStyle="bold"
         android:text="Location List"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_primary"

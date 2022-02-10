@@ -59,7 +59,7 @@ class NewsFragment : Fragment() {
             binding. journeybar.visibility = View.VISIBLE
         }
         binding.journey.setOnClickListener {
-            mNavController.navigate(R.id.homeFragment)
+            mNavController.navigate(R.id.addJourneyFragment)
             binding.newsbar.visibility = View.VISIBLE
             binding.journeybar.visibility = View.GONE
         }

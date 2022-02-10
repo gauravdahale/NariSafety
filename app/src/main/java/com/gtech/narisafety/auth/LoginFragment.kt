@@ -180,6 +180,7 @@ binding.submitStep1.setOnClickListener {
         editor.putString("username",authName.text.toString())
         editor.apply()
         FirebaseDatabase.getInstance().reference.child("users").child(mAuth?.currentUser?.uid.toString()).updateChildren(map).addOnCompleteListener {
+            FirebaseDatabase.getInstance().reference.child("usersbynumber").child(authMobile.text.toString()).updateChildren(map)
             mNavController.navigate(R.id.action_loginFragment_to_homeFragment)
         }
     }

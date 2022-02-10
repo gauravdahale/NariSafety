@@ -13,12 +13,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gtech.narisafety.MainActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.gtech.narisafety.R
 import com.gtech.narisafety.builder.AlarmBuilder
 import com.gtech.narisafety.databinding.FragmentHomeBinding
@@ -30,6 +30,7 @@ import com.gtech.narisafety.services.NotificationUtils
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class HomeFragment : Fragment(), IAlarmListener {
@@ -45,6 +46,11 @@ class HomeFragment : Fragment(), IAlarmListener {
     val list = ArrayList<TimeModel>()
     var timerset = false
     var builder: AlarmBuilder? = null;
+    val liststring = ArrayList<String>()
+    val currentuser = FirebaseAuth.getInstance().currentUser?.uid.toString()
+    val mReference = FirebaseDatabase.getInstance().reference.child("journeys").child(currentuser!!)
+    val key =
+        FirebaseDatabase.getInstance().reference.child("journeys").child(currentuser).push().key
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,21 +63,21 @@ class HomeFragment : Fragment(), IAlarmListener {
         return view
     }
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mNavController = Navigation.findNavController(view)
         mPrefs = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
         val username = mPrefs.getString("username", "")
-            binding. newsbar.visibility = View.GONE
-            binding. journeybar.visibility = View.VISIBLE
+        binding.newsbar.visibility = View.GONE
+        binding.journeybar.visibility = View.GONE
         binding.news.setOnClickListener {
             mNavController.navigate(R.id.newsFragment)
-           binding. newsbar.visibility = View.GONE
-            binding. journeybar.visibility = View.VISIBLE
+            binding.newsbar.visibility = View.GONE
+            binding.journeybar.visibility = View.GONE
         }
         binding.journey.setOnClickListener {
             mNavController.navigate(R.id.homeFragment)
-            binding.newsbar.visibility = View.VISIBLE
+            binding.newsbar.visibility = View.GONE
             binding.journeybar.visibility = View.GONE
         }
 
@@ -83,10 +89,6 @@ class HomeFragment : Fragment(), IAlarmListener {
             binding.sosnumber.setText(mPrefs.getString("sos", ""))
 
         }
-        builder = AlarmBuilder().with(requireContext())
-            .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(10))
-            .setId("UPDATE_INFO_SYSTEM_SERVICE")
-            .setAlarmType(AlarmType.ONE_TIME)
 
         binding.username.text = "Hello " + returnFirstName(username)
         binding.fromlayout.setOnClickListener {
@@ -100,47 +102,67 @@ class HomeFragment : Fragment(), IAlarmListener {
             mNavController.navigate(R.id.action_homeFragment_to_addLocationDialogFragment)
         }
         binding.submitJourney.setOnClickListener {
-            builder = AlarmBuilder().with(requireContext())
-                .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(10))
-                .setId("UPDATE_INFO_SYSTEM_SERVICE")
-                .setAlarmType(AlarmType.ONE_TIME)
+           FirebaseDatabase.getInstance().reference.child("numbersbyuser").child(binding.sosnumber.text.toString()).addListenerForSingleValueEvent(object:ValueEventListener{
+               override fun onDataChange(snapshot: DataSnapshot) {
+if(snapshot.exists()){
 
-            if (binding.sosnumber.text.toString().isNotBlank() && binding.tolocation.text.toString()
-                    .isNotBlank()
-                && binding.fromlocation.text.toString().isNotBlank()
-                && timerset
-            ) {
-                startjourney = binding.fromlocation.text.toString()
-                endjourney = binding.tolocation.text.toString()
-                if (startjourney.isNotBlank()) binding.startlocation.text = startjourney
-                if (endjourney.isNotBlank()) binding.endlocation.text = endjourney
-                Log.d("NariSafety", "Timeinmillis:$setSeconds ")
-                Log.d("NariSafety", "Timeinmillis:$setMillis ")
-                //  Toast.makeText(context, "Journey Started in $setmillis", Toast.LENGTH_SHORT).show()
+    builder = AlarmBuilder().with(requireContext())
+        .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(setSeconds.toLong()))
+        .setId("UPDATE_INFO_SYSTEM_SERVICE")
+        .setAlarmType(AlarmType.ONE_TIME)
 
-                mPrefs.edit().putString("sos", binding.sosnumber.text.toString()).apply()
-                val msg =
-                    "Hi I am at" + "latitude" + "/n longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. "
-                Log.d("NariSafety", "msg: $msg")
-                Log.d("NariSafety", "Setting Alarm Now")
+    if (binding.sosnumber.text.toString().isNotBlank() && binding.tolocation.text.toString()
+            .isNotBlank()
+        && binding.fromlocation.text.toString().isNotBlank()
+        && timerset
+    ) {
+        startjourney = binding.fromlocation.text.toString()
+        endjourney = binding.tolocation.text.toString()
+        if (startjourney.isNotBlank()) binding.startlocation.text = startjourney
+        if (endjourney.isNotBlank()) binding.endlocation.text = endjourney
+        Log.d("NariSafety", "Timeinmillis:$setSeconds ")
+        Log.d("NariSafety", "Timeinmillis:$setMillis ")
+        //  Toast.makeText(context, "Journey Started in $setmillis", Toast.LENGTH_SHORT).show()
 
-                builder?.setAlarm()
-            } else if (binding.fromlocation.text.toString().isEmpty()) {
-                binding.fromlocation.requestFocus()
-                binding.fromlocation.error = "Enter Location"
-            } else if (binding.tolocation.text.toString().isEmpty()) {
-                binding.tolocation.requestFocus()
-                binding.tolocation.error = "Enter Location"
-            } else if (binding.sosnumber.text.toString().isEmpty()) {
-                binding.sosnumber.requestFocus()
-                binding.sosnumber.error = "Enter SOS Number "
-            } else if (!timerset) {
-                binding.timer.requestFocus()
-                binding.timer.error = "Enter Journey Duration"
-            }
+        mPrefs.edit().putString("sos", binding.sosnumber.text.toString()).apply()
+        val msg =
+            "Hi I am at" + "latitude" + "/n longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. "
+        Log.d("NariSafety", "msg: $msg")
+        Log.d("NariSafety", "Setting Alarm Now")
+        val journeyModel = JourneyModel().apply {
+            start = binding.startlocation.text.toString()
+            end = binding.endlocation.text.toString()
+            sosnumber = binding.sosnumber.text.toString()
+            timing = binding.timer.text.toString()
+            middle = locatlionlist
+        }
+        mReference.setValue(journeyModel)
+        builder?.setAlarm()
+
+    } else if (binding.fromlocation.text.toString().isEmpty()) {
+        binding.fromlocation.requestFocus()
+        binding.fromlocation.error = "Enter Location"
+    } else if (binding.tolocation.text.toString().isEmpty()) {
+        binding.tolocation.requestFocus()
+        binding.tolocation.error = "Enter Location"
+    } else if (binding.sosnumber.text.toString().isEmpty()) {
+        binding.sosnumber.requestFocus()
+        binding.sosnumber.error = "Enter SOS Number "
+    } else if (!timerset) {
+        binding.timer.requestFocus()
+        binding.timer.error = "Enter Journey Duration"
+    }
+}else Toast.makeText(context, "Number is not a valid user", Toast.LENGTH_SHORT).show()
+
+               }
+
+               override fun onCancelled(error: DatabaseError) {
+               }
+
+           })
+
         }
         addtimerItems()
-        val liststring = ArrayList<String>()
         list.forEach { liststring.add(it.name!!) }
         var listadapter = ArrayAdapter<String>(
             requireContext(),
@@ -277,13 +299,21 @@ class HomeFragment : Fragment(), IAlarmListener {
                     "Hi I am at" + latitude + "/n $longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. +" +
                             "http://maps.google.com/?q=$latitude,$longitude\n"
                 Log.d("NariSafety", "msg: $msg")
-                smsManager.sendTextMessage(
-                    "+91" + binding.sosnumber.text.toString(),
-                    null,
-                    msg,
-                    null,
-                    null
-                )
+                val number =mPrefs.getString("sos", "sd")
+            val firemap = HashMap<String,Any>()
+                firemap["sentby"] = FirebaseAuth.getInstance().currentUser?.phoneNumber.toString()
+                firemap["sentbyuid"] = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                firemap["msg"] = msg
+                firemap["timestamp"] =ServerValue.TIMESTAMP
+                firemap["sos"] = number.toString()
+               FirebaseDatabase.getInstance().reference.child("userbynumber").child("notifications").push().setValue(firemap)
+//                smsManager.sendTextMessage(
+//                    "+91" + number,
+//                    null,
+//                    msg,
+//                    null,
+//                    null
+//                )
                 Toast.makeText(
                     requireContext().applicationContext, "Message Sent",
                     Toast.LENGTH_LONG
