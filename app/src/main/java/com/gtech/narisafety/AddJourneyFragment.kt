@@ -73,8 +73,15 @@ class AddJourneyFragment : Fragment() {
         binding.cancelJourney.setOnClickListener {
             builder = AlarmBuilder().with(requireContext())
             builder?.cancelAlarm()
-            mReference.removeValue()
+            mReference.removeValue().addOnSuccessListener {
+                binding.startlocation.text = ""
+                binding.endlocation.text = ""
+                middleList.clear()
+                mAdapter.notifyDataSetChanged()
+
+            }
             binding.localtionRecyclerview.visibility = View.VISIBLE
+
         }
     }
 

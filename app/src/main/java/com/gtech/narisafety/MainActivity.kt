@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         Dexter.withContext(this)
             .withPermissions(
-                android.Manifest.permission.SEND_SMS,
+//                android.Manifest.permission.SEND_SMS,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.SCHEDULE_EXACT_ALARM,
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "Current User: $mCurrentUser")
         Log.d(TAG, "UID: ${mCurrentUser?.uid}")
         if (mCurrentUser?.uid == null) {
-            navController.navigate(R.id.action_homeFragment_to_loginFragment)
+            navController.navigate(R.id.loginFragment)
             Log.d(TAG, "onCreate: $mCurrentUser ")
             Log.d(TAG, "onCreate: Going to Login")
 

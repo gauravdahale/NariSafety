@@ -29,10 +29,8 @@ import com.gtech.narisafety.services.GPSTracker
 import com.gtech.narisafety.services.NotificationUtils
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
-
+//Alarm Setup Here
 class HomeFragment : Fragment(), IAlarmListener {
     lateinit var mPrefs: SharedPreferences
     lateinit var mNavController: NavController
@@ -102,64 +100,81 @@ class HomeFragment : Fragment(), IAlarmListener {
             mNavController.navigate(R.id.action_homeFragment_to_addLocationDialogFragment)
         }
         binding.submitJourney.setOnClickListener {
-           FirebaseDatabase.getInstance().reference.child("numbersbyuser").child(binding.sosnumber.text.toString()).addListenerForSingleValueEvent(object:ValueEventListener{
-               override fun onDataChange(snapshot: DataSnapshot) {
-if(snapshot.exists()){
+            FirebaseDatabase.getInstance().reference.child("usersbynumber")
+                .child(binding.sosnumber.text.toString())
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
 
-    builder = AlarmBuilder().with(requireContext())
-        .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(setSeconds.toLong()))
-        .setId("UPDATE_INFO_SYSTEM_SERVICE")
-        .setAlarmType(AlarmType.ONE_TIME)
+                            builder = AlarmBuilder().with(requireContext())
+//        .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(setSeconds.toLong()))
+                                .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(10))
+                                .setId("UPDATE_INFO_SYSTEM_SERVICE")
+                                .setAlarmType(AlarmType.ONE_TIME)
 
-    if (binding.sosnumber.text.toString().isNotBlank() && binding.tolocation.text.toString()
-            .isNotBlank()
-        && binding.fromlocation.text.toString().isNotBlank()
-        && timerset
-    ) {
-        startjourney = binding.fromlocation.text.toString()
-        endjourney = binding.tolocation.text.toString()
-        if (startjourney.isNotBlank()) binding.startlocation.text = startjourney
-        if (endjourney.isNotBlank()) binding.endlocation.text = endjourney
-        Log.d("NariSafety", "Timeinmillis:$setSeconds ")
-        Log.d("NariSafety", "Timeinmillis:$setMillis ")
-        //  Toast.makeText(context, "Journey Started in $setmillis", Toast.LENGTH_SHORT).show()
+                            if (binding.sosnumber.text.toString()
+                                    .isNotBlank() && binding.tolocation.text.toString()
+                                    .isNotBlank()
+                                && binding.fromlocation.text.toString().isNotBlank()
+                                && timerset
+                            ) {
+                                startjourney = binding.fromlocation.text.toString()
+                                endjourney = binding.tolocation.text.toString()
+                                if (startjourney.isNotBlank()) binding.startlocation.text =
+                                    startjourney
+                                if (endjourney.isNotBlank()) binding.endlocation.text = endjourney
+                                Log.d("NariSafety", "Timeinmillis:$setSeconds ")
+                                Log.d("NariSafety", "Timeinmillis:$setMillis ")
+                                //  Toast.makeText(context, "Journey Started in $setmillis", Toast.LENGTH_SHORT).show()
 
-        mPrefs.edit().putString("sos", binding.sosnumber.text.toString()).apply()
-        val msg =
-            "Hi I am at" + "latitude" + "/n longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. "
-        Log.d("NariSafety", "msg: $msg")
-        Log.d("NariSafety", "Setting Alarm Now")
-        val journeyModel = JourneyModel().apply {
-            start = binding.startlocation.text.toString()
-            end = binding.endlocation.text.toString()
-            sosnumber = binding.sosnumber.text.toString()
-            timing = binding.timer.text.toString()
-            middle = locatlionlist
-        }
-        mReference.setValue(journeyModel)
-        builder?.setAlarm()
+                                mPrefs.edit().putString("sos", binding.sosnumber.text.toString())
+                                    .apply()
+                                val msg =
+                                    "Hi I am at" + "latitude" + "/n longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. "
 
-    } else if (binding.fromlocation.text.toString().isEmpty()) {
-        binding.fromlocation.requestFocus()
-        binding.fromlocation.error = "Enter Location"
-    } else if (binding.tolocation.text.toString().isEmpty()) {
-        binding.tolocation.requestFocus()
-        binding.tolocation.error = "Enter Location"
-    } else if (binding.sosnumber.text.toString().isEmpty()) {
-        binding.sosnumber.requestFocus()
-        binding.sosnumber.error = "Enter SOS Number "
-    } else if (!timerset) {
-        binding.timer.requestFocus()
-        binding.timer.error = "Enter Journey Duration"
-    }
-}else Toast.makeText(context, "Number is not a valid user", Toast.LENGTH_SHORT).show()
+                                Log.d("NariSafety", "msg: $msg")
+                                Log.d("NariSafety", "Setting Alarm Now")
+                                val journeyModel = JourneyModel().apply {
+                                    start = binding.startlocation.text.toString()
+                                    end = binding.endlocation.text.toString()
+                                    sosnumber = binding.sosnumber.text.toString()
+                                    timing = binding.timer.text.toString()
+                                    middle = locatlionlist
+                                }
 
-               }
+                                mReference.setValue(journeyModel)
+                                builder?.setAlarm()
+//Creating a bundle to send with intent when alarm triggers
 
-               override fun onCancelled(error: DatabaseError) {
-               }
 
-           })
+
+                                setAlarm(setSeconds,journeyModel)
+
+                            } else if (binding.fromlocation.text.toString().isEmpty()) {
+                                binding.fromlocation.requestFocus()
+                                binding.fromlocation.error = "Enter Location"
+                            } else if (binding.tolocation.text.toString().isEmpty()) {
+                                binding.tolocation.requestFocus()
+                                binding.tolocation.error = "Enter Location"
+                            } else if (binding.sosnumber.text.toString().isEmpty()) {
+                                binding.sosnumber.requestFocus()
+                                binding.sosnumber.error = "Enter SOS Number "
+                            } else if (!timerset) {
+                                binding.timer.requestFocus()
+                                binding.timer.error = "Enter Journey Duration"
+                            }
+                        } else Toast.makeText(
+                            context,
+                            "Number is not a valid user",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+
+                })
 
         }
         addtimerItems()
@@ -188,8 +203,8 @@ if(snapshot.exists()){
     private fun addtimerItems() {
         val md1 = TimeModel().apply {
             name = "15 Minutes"
-            secs = 60 * 15
-            millis = 60000 * 15
+            secs = 60 * 1
+            millis = 60000 * 1
         }
         val md2 = TimeModel().apply {
             name = "30 Minutes"
@@ -234,7 +249,8 @@ if(snapshot.exists()){
         return name
     }
 
-    private fun setAlarm(times: Int) {
+    private fun setAlarm(times: Int, jmodel: JourneyModel) {
+
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.SECOND, times)
         Toast.makeText(context, " $times", Toast.LENGTH_SHORT).show()
@@ -243,13 +259,14 @@ if(snapshot.exists()){
 
         //creating a new intent specifying the broadcast receiver
         val i = Intent(requireContext(), AlarmService::class.java)
-
+        i.putExtra("jbundle", jmodel)
         //creating a pending intent using the intent
         val pi = PendingIntent.getBroadcast(requireContext(), 0, i, 0)
 
         //setting the repeating alarm that will be fired every day
         am!!.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pi)
-//        Toast.makeText(context, "Alarm is set", Toast.LENGTH_SHORT).show()
+
+    //        Toast.makeText(context, "Alarm is set", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
@@ -269,6 +286,7 @@ if(snapshot.exists()){
     }
 
     override fun perform(context: Context, intent: Intent) {
+        Log.d("NariSafety", "perform Alarm just fired")
         val notificationUtils = NotificationUtils(context)
         val notification = notificationUtils.getNotificationBuilder()
             .setContentText("Perform task ")
@@ -277,17 +295,14 @@ if(snapshot.exists()){
         //you can check the log that it is fired
         //Here we are actually not doing anything
         //but you can do any task here that you want to be done at a specific time everyday
-        Log.d("NariSafety", "perform Alarm just fired")
         val gps = GPSTracker(context)
 
         // Check if GPS enabled
 
         // Check if GPS enabled
         if (gps.canGetLocation()) {
-            val latitude: Double = gps.getLatitude()
-            val longitude: Double = gps.getLongitude()
-
-
+            val latitude: Double = gps.latitude
+            val longitude: Double = gps.longitude
             // \n is for new line
             Toast.makeText(
                 context,
@@ -295,29 +310,24 @@ if(snapshot.exists()){
             ).show()
             try {
                 val smsManager: SmsManager = SmsManager.getDefault()
-                val msg =
-                    "Hi I am at" + latitude + "/n $longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. +" +
-                            "http://maps.google.com/?q=$latitude,$longitude\n"
+                val msg = "Hi I am at" + latitude + "/n $longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. +" +
+                        "http://maps.google.com/?q=$latitude,$longitude\n"
                 Log.d("NariSafety", "msg: $msg")
-                val number =mPrefs.getString("sos", "sd")
-            val firemap = HashMap<String,Any>()
+                val number = mPrefs.getString("sos", "sd")
+                val firemap = HashMap<String, Any>()
                 firemap["sentby"] = FirebaseAuth.getInstance().currentUser?.phoneNumber.toString()
                 firemap["sentbyuid"] = FirebaseAuth.getInstance().currentUser?.uid.toString()
                 firemap["msg"] = msg
-                firemap["timestamp"] =ServerValue.TIMESTAMP
+                firemap["timestamp"] = ServerValue.TIMESTAMP
                 firemap["sos"] = number.toString()
-               FirebaseDatabase.getInstance().reference.child("userbynumber").child("notifications").push().setValue(firemap)
-//                smsManager.sendTextMessage(
-//                    "+91" + number,
-//                    null,
-//                    msg,
-//                    null,
-//                    null
-//                )
+                FirebaseDatabase.getInstance().reference.child("usersbynumber")
+                    .child("notifications").push().setValue(firemap)
+
                 Toast.makeText(
                     requireContext().applicationContext, "Message Sent",
                     Toast.LENGTH_LONG
                 ).show()
+
             } catch (ex: Exception) {
                 Log.e("NariSafety", "perform sms operation error:${ex.localizedMessage} ")
                 Toast.makeText(

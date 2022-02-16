@@ -1,8 +1,9 @@
 package com.gtech.narisafety.home
 
 import com.google.firebase.database.ServerValue
+import java.io.Serializable
 
-class JourneyModel {
+class JourneyModel:Serializable {
     var key: String? = null
     var start: String? = null
     var end: String? = null
@@ -12,7 +13,7 @@ class JourneyModel {
     var timestamp = ServerValue.TIMESTAMP
 
 }
-class GetJourneyModel {
+class GetJourneyModel:Serializable {
     var key: String? = null
     var start: String? = null
     var end: String? = null

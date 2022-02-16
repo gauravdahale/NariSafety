@@ -75,7 +75,7 @@ class NewsFragment : Fragment() {
 getnews()
     }
     private fun getnews() {
-        FirebaseDatabase.getInstance().reference.child("news").orderByChild("timstamp").equalTo(true)
+        FirebaseDatabase.getInstance().reference.child("news").orderByChild("date")
             .addValueEventListener(object :
                 ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

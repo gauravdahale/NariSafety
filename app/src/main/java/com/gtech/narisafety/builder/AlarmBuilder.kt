@@ -10,9 +10,10 @@ import android.util.Log
 import com.gtech.narisafety.enums.AlarmType
 import com.gtech.narisafety.interfaces.IAlarmListener
 import java.util.*
+import kotlin.math.max
 
 class AlarmBuilder {
-
+    private  val TAG = "AlarmBuilder"
     //alarm variables
     private var alarmManager: AlarmManager? = null
     private var broadcastReceiver: BroadcastReceiver? = null
@@ -83,7 +84,7 @@ class AlarmBuilder {
             IntentFilter(this.id))
 
         //setting alarm
-        val ensurePositiveTime = Math.max(this.timeInMilliSeconds, 0L)
+        val ensurePositiveTime = max(this.timeInMilliSeconds, 0L)
         this.pendingIntent = PendingIntent.getBroadcast(this.context, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         //Check if alarm is already running
@@ -166,10 +167,12 @@ class AlarmBuilder {
         return object : BroadcastReceiver() {
 
             override fun onReceive(context: Context, intent: Intent) {
-
-                for (alarmListener in this@AlarmBuilder.alarmListenerSet!!) {
-                    alarmListener.perform(context, intent)
-                }
+                alarmListener?.perform(context, intent)
+//                for (alarmListener in this@AlarmBuilder.alarmListenerSet!!) {
+//                    Log.d(TAG, "onReceive: perform Called ")
+//                    alarmListener.perform(context, intent)
+//
+//                }
             }
         }
     }

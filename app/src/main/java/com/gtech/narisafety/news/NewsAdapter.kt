@@ -22,8 +22,8 @@ class NewsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        val model = mList[position] as NewsModel
-      //  holder.bind(model)
+        val model = mList[position] as NewsModel
+        holder.bind(model)
         holder.setItemOnClickListener(object : ItemClickListener {
             override fun onItemClick(i: Int) {
 //                val bundle = bundleOf("parcel" to model)mContext.mNavController.navigate(R.id.newsFragment, bundle)
@@ -32,7 +32,7 @@ class NewsAdapter(
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return mList.size
     }
 
     class ViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview), View.OnClickListener {
