@@ -9,11 +9,11 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.gtech.narisafety"
+        applicationId "com.dpark.selfprotect"
         minSdk 21
         targetSdk 31
-        versionCode 3
-        versionName "3.0"
+        versionCode 6
+        versionName "6.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 buildFeatures {

@@ -143,7 +143,8 @@ class HomeFragment : Fragment(), IAlarmListener {
                                 }
 
                                 mReference.setValue(journeyModel)
-                                builder?.setAlarm()
+                                builder
+//                                .setAlarm()
 //Creating a bundle to send with intent when alarm triggers
 
 
@@ -259,7 +260,7 @@ class HomeFragment : Fragment(), IAlarmListener {
 
         //creating a new intent specifying the broadcast receiver
         val i = Intent(requireContext(), AlarmService::class.java)
-        i.putExtra("jbundle", jmodel)
+        i.putExtra("jmodel", jmodel)
         //creating a pending intent using the intent
         val pi = PendingIntent.getBroadcast(requireContext(), 0, i, 0)
 
