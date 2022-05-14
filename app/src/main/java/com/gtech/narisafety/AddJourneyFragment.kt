@@ -1,6 +1,7 @@
 package com.gtech.narisafety
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,13 +25,15 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class AddJourneyFragment : Fragment() {
+class  AddJourneyFragment : Fragment() {
     private lateinit var mNavController: NavController
     var _binding: FragmentAddJourneyBinding? = null
     val binding get() = _binding!!
+    private  val TAG = "AddJourneyFragment"
     val currentuser = FirebaseAuth.getInstance().currentUser?.uid.toString()
     val middleList = ArrayList<String>()
     lateinit var mRecyclerView: RecyclerView
+    val mCurrentUser = FirebaseAuth.getInstance().currentUser?.uid
     var builder: AlarmBuilder? = null;
     val mReference = FirebaseDatabase.getInstance().reference.child("journeys").child(currentuser)
     lateinit var mAdapter: LocationAdapter
@@ -50,6 +53,12 @@ class AddJourneyFragment : Fragment() {
         mRecyclerView = binding.localtionRecyclerview
         binding.newsbar.visibility = View.GONE
         binding.journeybar.visibility = View.VISIBLE
+        if (mCurrentUser == null) {
+            mNavController.navigate(R.id.action_addJourneyFragment_to_loginFragment)
+            Log.d(TAG, "onCreate: $mCurrentUser ")
+            Log.d(TAG, "onCreate: Going to Login")
+
+        }
         binding.news.setOnClickListener {
             mNavController.navigate(R.id.newsFragment)
             binding.newsbar.visibility = View.GONE

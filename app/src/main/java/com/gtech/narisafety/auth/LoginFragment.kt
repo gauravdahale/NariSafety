@@ -181,7 +181,7 @@ binding.submitStep1.setOnClickListener {
         editor.apply()
         FirebaseDatabase.getInstance().reference.child("users").child(mAuth?.currentUser?.uid.toString()).updateChildren(map).addOnCompleteListener {
             FirebaseDatabase.getInstance().reference.child("usersbynumber").child(authMobile.text.toString()).updateChildren(map)
-            mNavController.navigate(R.id.action_loginFragment_to_homeFragment)
+            mNavController.navigate(R.id.action_loginFragment_to_addJourneyFragment)
         }
     }
     //the method is sending verification code
@@ -221,4 +221,8 @@ binding.submitStep1.setOnClickListener {
         Toast.makeText(requireContext(), "OTP has been sent again", Toast.LENGTH_LONG).show()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy: Fragment Destroyed")
+    }
 }

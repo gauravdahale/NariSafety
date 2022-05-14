@@ -20,15 +20,13 @@ import com.gtech.narisafety.R
 
 
 class MessagingService : FirebaseMessagingService() {
-val TAG = "Messaging Service"
+    val TAG = "Messaging Service"
     var notificationTitle: String? = null; var notificationBody:kotlin.String? = null
+    val mCurrentUser =FirebaseAuth.getInstance().currentUser?.uid
 
-    /**
-     * Called when message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
-    // [START receive_message]
+
+
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
@@ -40,7 +38,7 @@ val TAG = "Messaging Service"
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
+
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: ${remoteMessage.from}")
 
@@ -86,14 +84,13 @@ val TAG = "Messaging Service"
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(token)
+    if(mCurrentUser!=null)    sendRegistrationToServer(token)
     }
 
     private fun sendRegistrationToServer(token: Comparable<String>) {
-    val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        FirebaseDatabase.getInstance().getReference("users").child(uid).child("token").setValue(
-            token as String
-        )
+        Log.d(TAG, "sendRegistrationToServer: Called")
+    val uid = FirebaseAuth.getInstance().currentUser!!.uid.toString()
+        if(!uid.isNullOrEmpty()) FirebaseDatabase.getInstance().reference.child("users").child(uid).child("token").setValue(token as String)
 
     }
     private fun scheduleJob() {

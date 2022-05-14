@@ -20,7 +20,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -28,6 +27,9 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.ktx.Firebase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     lateinit var navController: NavController
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
-    private val mCurrentUser = FirebaseAuth.getInstance().currentUser
+    private val mCurrentUser = FirebaseAuth.getInstance().currentUser?.uid
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -74,13 +76,8 @@ class MainActivity : AppCompatActivity() {
             }).check()
         navController = findNavController(R.id.nav_host_fragment)
         Log.d(TAG, "Current User: $mCurrentUser")
-        Log.d(TAG, "UID: ${mCurrentUser?.uid}")
-        if (mCurrentUser?.uid == null) {
-            navController.navigate(R.id.loginFragment)
-            Log.d(TAG, "onCreate: $mCurrentUser ")
-            Log.d(TAG, "onCreate: Going to Login")
+        Log.d(TAG, "UID: ${mCurrentUser}")
 
-        }
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 setFCM()
     }
@@ -98,9 +95,24 @@ setFCM()
                 )
             )
         }
+        if (mCurrentUser != null) {
+            FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w(
+                            TAG, "getInstanceId failed",
+                            task.exception
+                        )
+                        return@OnCompleteListener
+                    }
 
+                    // Get new Instance ID token
+                    val token = task.result.token
+                FirebaseDatabase.getInstance().reference.child("users").child(mCurrentUser.toString()).child("token").setValue(token)
+                })
+
+        }
     }
-
     private fun requestPermissions() {
         // below line is use to request
         // permission in the current activity.

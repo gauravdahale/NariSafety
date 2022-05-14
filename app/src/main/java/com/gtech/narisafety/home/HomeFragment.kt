@@ -24,9 +24,11 @@ import com.gtech.narisafety.builder.AlarmBuilder
 import com.gtech.narisafety.databinding.FragmentHomeBinding
 import com.gtech.narisafety.enums.AlarmType
 import com.gtech.narisafety.interfaces.IAlarmListener
+import com.gtech.narisafety.myAppPreferences
 import com.gtech.narisafety.services.AlarmService
 import com.gtech.narisafety.services.GPSTracker
 import com.gtech.narisafety.services.NotificationUtils
+import com.gtech.narisafety.set
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -47,9 +49,8 @@ class HomeFragment : Fragment(), IAlarmListener {
     val liststring = ArrayList<String>()
     val currentuser = FirebaseAuth.getInstance().currentUser?.uid.toString()
     val mReference = FirebaseDatabase.getInstance().reference.child("journeys").child(currentuser!!)
-    val key =
-        FirebaseDatabase.getInstance().reference.child("journeys").child(currentuser).push().key
-
+    val key = FirebaseDatabase.getInstance().reference.child("journeys").child(currentuser).push().key
+val mCurrentUser = FirebaseAuth.getInstance().currentUser?.uid.toString()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -108,7 +109,7 @@ class HomeFragment : Fragment(), IAlarmListener {
 
                             builder = AlarmBuilder().with(requireContext())
 //        .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(setSeconds.toLong()))
-                                .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(10))
+                                .setTimeInMilliSeconds(TimeUnit.SECONDS.toMillis(setSeconds.toLong()))
                                 .setId("UPDATE_INFO_SYSTEM_SERVICE")
                                 .setAlarmType(AlarmType.ONE_TIME)
 
@@ -123,14 +124,13 @@ class HomeFragment : Fragment(), IAlarmListener {
                                 if (startjourney.isNotBlank()) binding.startlocation.text =
                                     startjourney
                                 if (endjourney.isNotBlank()) binding.endlocation.text = endjourney
-                                Log.d("NariSafety", "Timeinmillis:$setSeconds ")
-                                Log.d("NariSafety", "Timeinmillis:$setMillis ")
+//                                Log.d("NariSafety", "Timeinmillis:$setSeconds ")
+//                                Log.d("NariSafety", "Timeinmillis:$setMillis ")
                                 //  Toast.makeText(context, "Journey Started in $setmillis", Toast.LENGTH_SHORT).show()
 
                                 mPrefs.edit().putString("sos", binding.sosnumber.text.toString())
                                     .apply()
-                                val msg =
-                                    "Hi I am at" + "latitude" + "/n longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. "
+                                val msg = "Hi I am at this" + "latitude" + "/n longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. "
 
                                 Log.d("NariSafety", "msg: $msg")
                                 Log.d("NariSafety", "Setting Alarm Now")
@@ -148,7 +148,7 @@ class HomeFragment : Fragment(), IAlarmListener {
 //Creating a bundle to send with intent when alarm triggers
 
 
-
+FirebaseDatabase.getInstance().reference.child("tempdata").child(mCurrentUser).setValue(journeyModel)
                                 setAlarm(setSeconds,journeyModel)
 
                             } else if (binding.fromlocation.text.toString().isEmpty()) {
@@ -204,27 +204,27 @@ class HomeFragment : Fragment(), IAlarmListener {
     private fun addtimerItems() {
         val md1 = TimeModel().apply {
             name = "15 Minutes"
-            secs = 60 * 1
+            secs = 10 * 1
             millis = 60000 * 1
         }
         val md2 = TimeModel().apply {
             name = "30 Minutes"
-            secs = 60 * 30
+            secs = 20 * 30
             millis = 60000 * 30
         }
         val md3 = TimeModel().apply {
             name = "45 Minutes"
-            secs = 60 * 45
+            secs = 30 * 45
             millis = 60000 * 45
         }
         val md4 = TimeModel().apply {
             name = "60 Minutes"
-            secs = 60 * 60
+            secs = 40 * 60
             millis = 60000 * 60
         }
         val md5 = TimeModel().apply {
             name = "90 Minutes"
-            secs = 60 * 90
+            secs = 50 * 90
             millis = 60000 * 90
         }
         val md6 = TimeModel().apply {
@@ -251,7 +251,15 @@ class HomeFragment : Fragment(), IAlarmListener {
     }
 
     private fun setAlarm(times: Int, jmodel: JourneyModel) {
-
+        Log.d(TAG, "setAlarm1:Start  ${binding.startlocation.text.toString()}")
+        Log.d(TAG, "setAlarm1:End ${jmodel.end}")
+        Log.d(TAG, "setAlarm1:Timing ${jmodel.timing}")
+        Log.d(TAG, "setAlarm1:Middle ${jmodel.middle}")
+        requireContext().myAppPreferences["start"] =binding.startlocation.text.toString()
+      requireContext().myAppPreferences["end"] =binding.endlocation.text.toString()
+//      requireContext().myAppPreferences["middle"] =binding
+      requireContext().myAppPreferences["sos"] =binding.sosnumber.text.toString()
+      requireContext().myAppPreferences["timing"] =binding.timer.text.toString()
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.SECOND, times)
         Toast.makeText(context, " $times", Toast.LENGTH_SHORT).show()
@@ -288,6 +296,7 @@ class HomeFragment : Fragment(), IAlarmListener {
 
     override fun perform(context: Context, intent: Intent) {
         Log.d("NariSafety", "perform Alarm just fired")
+        Toast.makeText(context, "Perform Fired", Toast.LENGTH_SHORT).show()
         val notificationUtils = NotificationUtils(context)
         val notification = notificationUtils.getNotificationBuilder()
             .setContentText("Perform task ")
@@ -297,6 +306,7 @@ class HomeFragment : Fragment(), IAlarmListener {
         //Here we are actually not doing anything
         //but you can do any task here that you want to be done at a specific time everyday
         val gps = GPSTracker(context)
+val i  = intent.getSerializableExtra("jmodel") as JourneyModel
 
         // Check if GPS enabled
 
@@ -305,15 +315,15 @@ class HomeFragment : Fragment(), IAlarmListener {
             val latitude: Double = gps.latitude
             val longitude: Double = gps.longitude
             // \n is for new line
-            Toast.makeText(
-                context,
-                "Your Location is - \nLat: $latitude\nLong: $longitude", Toast.LENGTH_LONG
-            ).show()
+//            Toast.makeText(
+//                context,
+//                "Your Location is - \nLat: $latitude\nLong: $longitude", Toast.LENGTH_LONG
+//            ).show()
             try {
                 val smsManager: SmsManager = SmsManager.getDefault()
-                val msg = "Hi I am at" + latitude + "/n $longitude" + "/n was going from ${binding.fromlocation.text.toString()} to ${binding.tolocation.text.toString()}. +" +
+                val msg = "Hi I am at locations" + latitude + "/n $longitude" + "/n was going from ${i.start.toString()} to ${i.end} . + was about to reach  in ${i.timing}" +
                         "http://maps.google.com/?q=$latitude,$longitude\n"
-                Log.d("NariSafety", "msg: $msg")
+                //Log.d("NariSafety", "msg: $msg")
                 val number = mPrefs.getString("sos", "sd")
                 val firemap = HashMap<String, Any>()
                 firemap["sentby"] = FirebaseAuth.getInstance().currentUser?.phoneNumber.toString()
@@ -323,6 +333,8 @@ class HomeFragment : Fragment(), IAlarmListener {
                 firemap["sos"] = number.toString()
                 FirebaseDatabase.getInstance().reference.child("usersbynumber")
                     .child("notifications").push().setValue(firemap)
+                FirebaseDatabase.getInstance().reference.child("usersbynumberdata")
+                    .child(mCurrentUser).setValue(firemap)
 
                 Toast.makeText(
                     requireContext().applicationContext, "Message Sent",
