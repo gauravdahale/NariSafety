@@ -60,6 +60,11 @@
             app:popUpTo="@id/loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.gtech.narisafety.notification.NotificationFragment"
+        android:label="fragment_notification_list"
+        tools:layout="@layout/fragment_notification_list" />
 
 
 </navigation>

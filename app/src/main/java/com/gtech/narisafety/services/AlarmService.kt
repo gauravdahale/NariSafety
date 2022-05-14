@@ -100,8 +100,9 @@ val mCurrentUser = FirebaseAuth.getInstance().currentUser?.uid.toString()
                                     "http://maps.google.com/?q=$latitude,$longitude\n"
 firemap["msg"] = msg
                         firemap["sos"] = "+91" +md?.sosnumber
+                        firemap["timestamp"] = ServerValue.TIMESTAMP
 
-                        FirebaseDatabase.getInstance().reference.child("usersbynumbersss")
+                        FirebaseDatabase.getInstance().reference.child("usersbynumbersnotifications")
                             .child(number.toString())
                             .child("notifications").push().setValue(firemap)
 
